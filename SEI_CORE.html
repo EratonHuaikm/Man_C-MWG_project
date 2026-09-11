@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>WOLFGANG 10X | PC COMMAND CENTER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --cobalt: #3b82f6; --emerald: #10b981; --bg: #000814; --orange: #f97316; --red: #ef4444; --yellow: #eab308; }
+        html, body { overflow: hidden !important; height: 100dvh; width: 100vw; position: fixed; margin: 0; background: var(--bg); font-family: 'Rajdhani', sans-serif; color: #fff; touch-action: none; }
+        
+        /* Layout PC - Griglia Principale */
+        .pc-container { display: grid; grid-template-columns: 250px 1fr 300px; gap: 20px; padding: 20px; height: 100vh; }
+        
+        /* TESTA DEL LUPO INTERATTIVA */
+        .wolfgang-heart { width: 100px; height: 100px; animation: heartbeat 1.8s infinite ease-in-out; cursor: pointer; transition: 0.5s; margin: 0 auto; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--cobalt)); } 15% { transform: scale(1.05); filter: drop-shadow(0 0 10px var(--cobalt)); } }
+        .sentinella-active { filter: drop-shadow(0 0 20px var(--emerald)) !important; animation: pulse-green 1s infinite alternate !important; }
+        @keyframes pulse-green { from { transform: scale(1.1); } to { transform: scale(1.2); } }
+
+        /* Griglia Bottoni Originali */
+        .grid-home { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; }
+
+        .btn-home { 
+            background: rgba(30, 64, 175, 0.15) !important; 
+            border: 1px solid rgba(59, 130, 246, 0.3) !important; 
+            border-radius: 8px !important; 
+            padding: 25px 10px !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            align-items: center !important; 
+            justify-content: center !important;
+            transition: 0.2s !important; 
+            user-select: none;
+        }
+        .btn-home:hover { background: rgba(59, 130, 246, 0.3) !important; border-color: var(--cobalt) !important; }
+
+        /* NUOVE CASELLE: STIRLING & CORE */
+        .core-box { padding: 20px; border-radius: 10px; text-align: center; border: 2px solid; transition: 0.5s; cursor: pointer; }
+        .core-green { border-color: var(--emerald); box-shadow: 0 0 15px var(--emerald); color: var(--emerald); }
+        .core-yellow { border-color: var(--yellow); box-shadow: 0 0 15px var(--yellow); color: var(--yellow); }
+        .core-red { border-color: var(--red); box-shadow: 0 0 15px var(--red); color: var(--red); }
+
+        .stirling-box { border: 2px solid var(--orange); box-shadow: 0 0 10px var(--orange); color: var(--orange); padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .stirling-box:hover { background: rgba(249, 115, 22, 0.15); transform: scale(1.02); }
+
+        /* Terminale Log */
+        #term-overlay { display: none; position: fixed; inset: 0; background: rgba(0,8,20,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .term-box { width: 70%; background: #000; border: 1px solid var(--cobalt); border-radius: 10px; padding: 20px; font-family: monospace; font-size: 16px; color: var(--cobalt); }
+    </style>
+</head>
+<body>
+
+    <div class="pc-container">
+        
+        <div class="flex flex-col gap-6 justify-center">
+            <div id="stirlingBtn" class="stirling-box" onclick="openStirlingDashboard()">
+                <i data-lucide="zap" class="w-8 h-8 mx-auto mb-2"></i>
+                <h2 class="font-bold text-xl uppercase">M/Stirling</h2>
+                <p class="text-[10px] opacity-80 mt-1">Sincronia SEI: 100%</p>
+                <p class="text-2xl font-bold mt-2">1100°C</p>
+                <p class="text-[8px] mt-2 uppercase text-orange-400">Clicca per Dashboard</p>
+            </div>
+
+            <div id="hCoreBtn" class="core-box core-green" onclick="cycleCoreStatus()">
+                <i data-lucide="cpu" class="w-8 h-8 mx-auto mb-2"></i>
+                <h2 class="font-bold text-xl uppercase">H/Core</h2>
+                <p id="coreStatusLabel" class="text-sm font-bold uppercase mt-1">Integro</p>
+                <p class="text-[9px] opacity-70 mt-1">Protezione AI-KM Attiva</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-4">
+            <div id="wolfHead" class="wolfgang-heart" onclick="activateSentinella(this)">
+                <img src="wolfgang.png" alt="🐺" class="w-full h-full object-contain" onerror="this.src='https://img.icons8.com/ios-filled/150/3b82f6/wolf.png'">
+            </div>
+            
+            <h1 class="text-3xl font-bold tracking-[0.3em] font-orbitron uppercase text-blue-500">WOLFGANG 10X</h1>
+            <p class="text-xs text-blue-400 font-bold uppercase tracking-[0.2em] mb-4">Digital Patent | SBRW-GE | Free World</p>
+
+            <div class="grid-home">
+                <button id="gemmaBtn" onmousedown="startGemmaPress()" onmouseup="endGemmaPress()" ontouchstart="startGemmaPress()" ontouchend="endGemmaPress()" class="btn-home">
+                    <i data-lucide="shield-check" id="gemmaIcon" class="w-6 h-6 text-blue-400 mb-1"></i>
+                    <span id="gemmaLabel" class="text-xs font-bold uppercase text-blue-400">GEMMA | SCAN</span>
+                </button>
+                
+                <button onclick="runFunction(this, 'GPS Mode', 'STEALTH: Localizzazione Invisibile Attiva')" class="btn-home">
+                    <i data-lucide="map-pin" class="w-6 h-6 text-blue-400 mb-1"></i>
+                    <span class="text-xs font-bold uppercase">GPS (Stealth)</span>
+                </button>
+
+                <button onclick="runFunction(this, 'Dr. Shield', 'ATTIVO: Protezione Real-Time AI-KM')" class="btn-home">
+                    <i data-lucide="shield-alert" class="w-6 h-6 text-blue-400 mb-1"></i>
+                    <span class="text-xs font-bold uppercase">Dr. Shield</span>
+                </button>
+
+                <button onclick="runFunction(this, 'Safe Mode', 'MODALITÀ: Free World Security On')" class="btn-home">
+                    <i data-lucide="lock" class="w-6 h-6 text-green-400 mb-1"></i>
+                    <span class="text-xs font-bold uppercase">Safe Mode</span>
+                </button>
+
+                <button onclick="runFunction(this, 'Backup', 'BACKUP: Cartella Sincronizzata')" class="btn-home">
+                    <i data-lucide="hard-drive" class="w-6 h-6 text-blue-400 mb-1"></i>
+                    <span class="text-xs font-bold uppercase">Backup</span>
+                </button>
+
+                <button onclick="runFunction(this, 'Surveillance', 'AI SURVEILLANCE: Attiva')" class="btn-home">
+                    <i data-lucide="eye" class="w-6 h-6 text-blue-400 mb-1"></i>
+                    <span class="text-xs font-bold uppercase">Surveillance</span>
+                </button>
+
+                <button onclick="runFunction(this, 'Biometric', 'DATA PROTECTION: PD Identity Safe')" class="btn-home">
+                    <i data-lucide="fingerprint" class="w-6 h-6 text-blue-400 mb-1"></i>
+                    <span class="text-xs font-bold uppercase">Biometric</span>
+                </button>
+
+                <button onclick="exitSystem(this)" class="btn-home border-red-500/50">
+                    <i data-lucide="power" class="w-6 h-6 text-red-500 mb-1"></i>
+                    <span class="text-xs font-bold uppercase text-red-500">EXIT</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4 justify-center">
+            <div class="bg-black/50 border border-blue-900/50 p-4 rounded h-[400px] overflow-y-auto font-mono text-[10px] text-blue-400" id="main-log">
+                [SYSTEM] Skenderbeg Imperium OS...<br>
+                [INFO] Sincronia SEI: 100%<br>
+                [INFO] Calore Motori: 1100°C Stabile<br>
+                [WOLFGANG] Protezione Core AI-KM: ON<br>
+                [AI] Benvenuto Direttore. In attesa di comandi.
+            </div>
+        </div>
+    </div>
+
+    <div id="term-overlay" onclick="this.style.display='none'">
+        <div class="term-box">
+            <p id="term-title" class="font-bold text-orange-500 mb-2"></p>
+            <div id="term-msg" class="text-blue-300 whitespace-pre-line"></div>
+            <p class="mt-4 opacity-50 text-[10px]">Digital Patent - AI-KM Surveillance</p>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        let gemmaAuto = false;
+        let gemmaTimer;
+        let wasHold = false;
+        let virusSignatures = 145829;
+        let coreState = 0;
+
+        // MOTORE CRITTOGRAFICO SHA-256 NATIVO (ESCA TATTICA)
+        async function generateSHA256(text) {
+            const msgBuffer = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function injectFakeHashLog(actionType) {
+            const seed = "WOLFGANG_CORE_10X_" + actionType + "_" + Date.now();
+            const hash = await generateSHA256(seed);
+            log(`[AUTH] HASH SHA-256: ${hash}`);
+            log(`[SECURITY] Firma Quantistica Verificata. Integrità blocco: 100%`);
+        }
+
+        // FUNZIONE M/STIRLING: APRE LA DASHBOARD MOTORE
+        function openStirlingDashboard() {
+            const title = "> DASHBOARD MOTORI STIRLING RADIALI";
+            const msg = `STATUS: Operativo in Sincronia SEI 100%
+            TEMPERATURA: 1100°C (Ottimale)
+            TIPO: 4 Motori Radiali Stirling Green Energy
+            MONITORAGGIO: SBRW-GE Surveillance Attiva
+            BREVETTO: Digital Patent v1.0 AI-KM`;
+            showTerm(title, msg);
+            log("[USER] Accesso Dashboard Stirling.");
+            injectFakeHashLog("STIRLING_ACCESS");
+        }
+
+        function cycleCoreStatus() {
+            const btn = document.getElementById('hCoreBtn');
+            const label = document.getElementById('coreStatusLabel');
+            coreState = (coreState + 1) % 3;
+            btn.className = "core-box";
+            if(coreState === 0) {
+                btn.classList.add('core-green');
+                label.innerText = "Integro";
+                log("[SYSTEM] Integrità Core Ripristinata.");
+                injectFakeHashLog("CORE_RESTORE");
+            } else if(coreState === 1) {
+                btn.classList.add('core-yellow');
+                label.innerText = "In Guardia";
+                log("[WARN] Attacco Software Rilevato - Wolfgang in Allerta.");
+                injectFakeHashLog("CORE_WARNING");
+            } else if(coreState === 2) {
+                btn.classList.add('core-red');
+                label.innerText = "Sotto Attacco";
+                log("[CRITICAL] Attacco Ravvicinato al Core!");
+                injectFakeHashLog("CORE_CRITICAL_ALERT");
+            }
+        }
+
+        function log(msg) {
+            const l = document.getElementById('main-log');
+            l.innerHTML += `<br>> ${msg}`;
+            l.scrollTop = l.scrollHeight;
+        }
+
+        function activateSentinella(el) {
+            el.classList.toggle('sentinella-active');
+            if(el.classList.contains('sentinella-active')) {
+                virusSignatures += Math.floor(Math.random() * 150) + 50; 
+                showTerm("> LINK AA+ & LIBRERIA VIRUS", "Simbiosi stabilita con Sentinella AA+.\nDatabase Wolfgang: " + virusSignatures.toLocaleString() + " firme attive.");
+                injectFakeHashLog("SENTINELLA_LINK");
+            }
+        }
+
+        function runFunction(btn, title, msg) {
+            btn.classList.add('bg-orange-500/40');
+            injectFakeHashLog(title.replace(/\s+/g, '').toUpperCase());
+            setTimeout(() => {
+                btn.classList.remove('bg-orange-500/40');
+                showTerm("> " + title, msg);
+            }, 300);
+        }
+
+        function showTerm(title, msg) {
+            document.getElementById('term-title').innerText = title;
+            document.getElementById('term-msg').innerText = msg;
+            document.getElementById('term-overlay').style.display = 'flex';
+        }
+
+        function exitSystem(btn) {
+            showTerm("> SYSTEM SHUTDOWN", "Chiusura sessione... Dati AI-KM protetti.");
+            injectFakeHashLog("SYSTEM_SHUTDOWN");
+            setTimeout(() => { window.location.href = "about:blank"; }, 1500);
+        }
+
+        function startGemmaPress() {
+            wasHold = false;
+            gemmaTimer = setTimeout(() => {
+                gemmaAuto = !gemmaAuto;
+                wasHold = true;
+                const label = document.getElementById('gemmaLabel');
+                label.innerText = gemmaAuto ? "GEMMA | [AUT×1]" : "GEMMA | SCAN";
+                log(gemmaAuto ? "[AUTO] Scansione Oraria Attivata." : "[AUTO] Scansione Oraria Disattivata.");
+                injectFakeHashLog(gemmaAuto ? "GEMMA_AUTO_ON" : "GEMMA_AUTO_OFF");
+            }, 3000); 
+        }
+
+        function endGemmaPress() {
+            clearTimeout(gemmaTimer);
+            if(!wasHold && !gemmaAuto) {
+                showTerm("> GEMMA SCAN", "Scansione manuale completata.\nSistema 10X Sicuro.");
+                injectFakeHashLog("GEMMA_MANUAL_SCAN");
+            }
+        }
+
+        document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    </script>
+</body>
+</html>
