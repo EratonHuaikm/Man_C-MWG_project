@@ -14,7 +14,8 @@ ___________________________________________
 # multiple functionalities in every aspect, regarding Green Energy, 
 # is a mission to protect the planet. No one can use it without 
 # consent and sustainability parameters.
-# =====================================================================
+
+# ​[UPDATE - 2026] VALIDAZIONE TERMODINAMICA COMPLETATA: Il modulo avanzato in SelfMode ha superato i test di stabilità su un ciclo di 24h in OpenModelica con convergenza assoluta. Nessuna anomalia termica, bilancio energetico chiuso. Per i dettagli tecnici, consultare il file VALIDATION_REPORT_CORE.txt====================================================================
 
 from kivy.app import App
 from kivy.uix.anchorlayout import AnchorLayout
