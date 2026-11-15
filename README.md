@@ -1,4 +1,3 @@
-
 ---
 
 ## 🔐 Certificazione Crittografica (Digital Patent & Integrity Seal)
@@ -23,7 +22,7 @@ Questo repository pubblico contiene esclusivamente una **versione di simulazione
 
 L'algoritmo unisce in un unico ciclo di controllo cibernetico:
 1. **Telemetria e Gemello Digitale Persistente:** Monitoraggio dei parametri neurologici e motori chiave (**MRC**, **Berg Balance Scale**, **VDC**).
-2. **Elaborazione Tensoriale:** Modelli basati su TensorFlow per la stima del carico articolare e della fatica neuromuscolare.
+2. **Elaborazione Tensoriale:** Modelli basati per la stima del carico articolare e della fatica neuromuscolare.
 3. **Logica di Sicurezza e Prevenzione:** Rilevamento preventivo del rischio di lesione e attivazione di protocolli di emergenza e mantenimento omeostatico.
 
 La struttura è pensata per offrire a studenti, ricercatori e start-up biomediche una base open-source robusta per studiare i sistemi ad anello chiuso (*Closed-Loop*) in ambito riabilitativo.
