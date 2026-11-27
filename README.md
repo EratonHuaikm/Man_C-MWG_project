@@ -10,6 +10,7 @@
 
 
 👉 **Download diretto degli APK funzionanti (e future build `.exe`):** [Vai alla pagina Releases](https://github.com/EratonHuaikm/Man_C-MWG_project/releases)
+
 🎥 **Demo Video & Canale Ufficiale YouTube:** [Guarda l'app in azione su @Man_C-MWG](https://www.youtube.com/@Man_C-MWG)
 
 ---
