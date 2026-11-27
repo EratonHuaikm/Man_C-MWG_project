@@ -1,4 +1,3 @@
-Ecco il README.md unificato, con i blocchi di codice chiusi correttamente (nel testo incollato mancava la chiusura ``` dopo sha256sum, che avrebbe rotto la formattazione su GitHub) e con i badge posizionati in alto:
 # BIOLMEDICARE - IKARO SBRW (v8.6)
 ### Offline Medical Report Analysis Suite for Android — by # AIKM-SeiCore
 
