@@ -6,8 +6,11 @@
 [![Android APK: Disponibili](https://img.shields.io/badge/Android%20APK-Disponibili-3DDC84?logo=android&logoColor=white)](https://github.com/EratonHuaikm/Man_C-MWG_project/releases)
 [![Windows EXE: In Arrivo](https://img.shields.io/badge/Windows%20EXE-In%20Arrivo-0078D6?logo=windows&logoColor=white)](https://github.com/EratonHuaikm/Man_C-MWG_project/releases)
 [![Status: Operativo](https://img.shields.io/badge/Status-Operativo%20%7C%20IoT%20%26%20Digital%20Twin-brightgreen)](#)
+[![YouTube: @Man_C-MWG](https://img.shields.io/badge/YouTube-@Man__C--MWG-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@Man_C-MWG)
+
 
 👉 **Download diretto degli APK funzionanti (e future build `.exe`):** [Vai alla pagina Releases](https://github.com/EratonHuaikm/Man_C-MWG_project/releases)
+🎥 **Demo Video & Canale Ufficiale YouTube:** [Guarda l'app in azione su @Man_C-MWG](https://www.youtube.com/@Man_C-MWG)
 
 ---
 
